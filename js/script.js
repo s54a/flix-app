@@ -4,7 +4,8 @@ const global = {
     term: "",
     type: "",
     page: 1,
-    totalPages: 1,
+    total_pages: 1,
+    total_results: 0,
   },
   api: {
     API_KEY: "034762d6f969bde75ad8302b2c2e63a5",
@@ -269,7 +270,11 @@ async function search() {
   global.search.term = urlParams.get("search-term");
 
   if (global.search.term !== "" && global.search.term !== null) {
-    const { results, total_pages, page } = await searchAPIData();
+    const { results, total_pages, total_results, page } = await searchAPIData();
+
+    global.search.page = page;
+    global.search.total_pages = total_pages;
+    global.search.total_results = total_results;
     // console.log(results);
     if (results.length === "0") {
       showAlert("No Results Found");
@@ -285,6 +290,11 @@ async function search() {
 }
 
 function displaySearchResults(results) {
+  // To Clear Previous Results
+  document.querySelector("#search-results").innerHTML = "";
+  document.querySelector("#search-results-heading").innerHTML = "";
+  document.querySelector("#pagination").innerHTML = "";
+
   results.forEach((result) => {
     const div = document.createElement("div");
     div.classList.add("card");
@@ -325,7 +335,49 @@ function displaySearchResults(results) {
             </div>
           `;
 
+    document.querySelector("#search-results-heading").innerHTML = `
+                <h2>${results.length} of ${global.search.total_results} Results for ${global.search.term}</h2>
+    `;
+
     document.querySelector("#search-results").appendChild(div);
+  });
+
+  displayPagination();
+}
+
+function displayPagination() {
+  const div = document.createElement("div");
+  div.classList.add("pagination");
+  div.innerHTML = `
+    <div class="pagination">
+      <button class="btn btn-primary" id="prev">Prev</button>
+      <button class="btn btn-primary" id="next">Next</button>
+      <div class="page-counter">Page ${global.search.page} of ${global.search.total_pages}</div>
+    </div>
+  `;
+
+  document.querySelector("#pagination").appendChild(div);
+
+  // Disable the Prev Button if on Page 1
+  if (global.search.page === 1) {
+    document.querySelector("#prev").disabled = true;
+  }
+  // Disable the Next Button if on Last Page
+  if (global.search.page === global.search.total_pages) {
+    document.querySelector("#next").disabled = true;
+  }
+
+  // Previous 20 Movies or Page
+  document.querySelector("#prev").addEventListener("click", async () => {
+    global.search.page--;
+    const { results } = await searchAPIData();
+    displaySearchResults(results);
+  });
+  // Next 20 Movies or Page
+  document.querySelector("#next").addEventListener("click", async () => {
+    global.search.page++;
+    const { results } = await searchAPIData();
+    displaySearchResults(results);
   });
 }
 
@@ -398,7 +450,7 @@ async function searchAPIData() {
   showSpinner();
 
   const response = await fetch(
-    `${API_URL}search/${global.search.type}?api_key=${API_KEY}&language=en-US&query=${global.search.term}`
+    `${API_URL}search/${global.search.type}?api_key=${API_KEY}&language=en-US&query=${global.search.term}&page=${global.search.page}`
   );
   const data = response.json();
 
