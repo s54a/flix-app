@@ -332,9 +332,8 @@ section h2 {
   color: #fff;
 }
 
-.svgIcon {
-  width: 25px;
-  height: 25px;
+path:hover {
+  stroke: #fff;
 }
 
 .pagination {
@@ -360,14 +359,14 @@ section h2 {
   background: red;
 }
 
-svg .colorHover:hover {
+a:hover .icon,
+a:hover svg {
   fill: #f1c40f;
   color: #f1c40f;
-  height: 50px;
-  width: 50px;
 }
 
-svg:hover {
+a:hover .icon,
+a:hover path {
   fill: #f1c40f;
   color: #f1c40f;
 }
