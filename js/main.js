@@ -13,9 +13,6 @@ const global = {
   },
 };
 
-console.log(import.meta.env.VITE_TMDB_API_URL);
-console.log(import.meta.env.VITE_TMDB_API_KEY);
-
 async function displayPopularMovies() {
   const { results } = await fetchAPIData("movie/popular");
 
