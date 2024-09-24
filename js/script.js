@@ -8,8 +8,8 @@ const global = {
     total_results: 0,
   },
   api: {
-    API_KEY: "034762d6f969bde75ad8302b2c2e63a5",
-    API_URL: "https://api.themoviedb.org/3/",
+    API_URL: import.meta.env.VITE_TMDB_API_URL,
+    API_KEY: import.meta.env.VITE_TMDB_API_KEY,
   },
 };
 
