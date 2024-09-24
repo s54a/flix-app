@@ -171,7 +171,18 @@ ul {
   color: #fff;
 }
 
+.main-footer .container .social-links a img {
+  margin-left: 10px;
+  color: #fff;
+}
+
 .main-footer .container .social-links a:hover {
+  color: var(--color-secondary);
+  fill: var(--color-secondary);
+}
+
+.main-footer .container .social-links a img:hover {
+  fill: var(--color-secondary);
   color: var(--color-secondary);
 }
 
@@ -311,11 +322,19 @@ section h2 {
   cursor: pointer;
   background: var(--color-secondary);
   color: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .search .container form button:hover {
   background: transparent;
   color: #fff;
+}
+
+.svgIcon {
+  width: 25px;
+  height: 25px;
 }
 
 .pagination {
@@ -339,4 +358,16 @@ section h2 {
 
 .error {
   background: red;
+}
+
+svg .colorHover:hover {
+  fill: #f1c40f;
+  color: #f1c40f;
+  height: 50px;
+  width: 50px;
+}
+
+svg:hover {
+  fill: #f1c40f;
+  color: #f1c40f;
 }
