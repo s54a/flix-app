@@ -372,3 +372,8 @@ a:hover path {
   fill: #f1c40f;
   color: #f1c40f;
 }
+
+#hover-button:hover .searchIcon {
+  fill: none;
+  stroke: #fff;
+}

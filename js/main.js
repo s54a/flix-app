@@ -519,17 +519,4 @@ function init() {
   highlightActiveLinks();
 }
 
-const svgPath = document.querySelector("path");
-const button = document.getElementById("hover-button");
-
-button.addEventListener("mouseenter", () => {
-  svgPath.setAttribute("stroke", "white");
-  svgPath.setAttribute("fill", "transparent"); // Make the inside transparent
-});
-
-button.addEventListener("mouseleave", () => {
-  svgPath.setAttribute("stroke", "#000000");
-  svgPath.setAttribute("fill", "none"); // Reset fill to none
-});
-
 document.addEventListener("DOMContentLoaded", init);
