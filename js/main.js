@@ -423,6 +423,19 @@ function initSwiper() {
   });
 }
 
+// Add this function to display error messages
+function displayErrorMessage(message) {
+  const mainContainer = document.querySelector(".mainContainer");
+  mainContainer.innerHTML = `
+    <div class="container">
+      <div class="alert alert-danger text-center" role="alert">
+        <h4 class="alert-heading">Error</h4>
+        <p>${message}</p>
+      </div>
+    </div>
+  `;
+}
+
 // Fetch Data from MovieDB API
 async function fetchAPIData(endpoint) {
   const API_KEY = global.api.API_KEY;
@@ -430,14 +443,22 @@ async function fetchAPIData(endpoint) {
 
   showSpinner();
 
-  const response = await fetch(
-    `${API_URL}${endpoint}?api_key=${API_KEY}&language=en-US`
-  );
-  const data = await response.json();
+  try {
+    const response = await fetch(
+      `${API_URL}${endpoint}?api_key=${API_KEY}&language=en-US`
+    );
+    const data = await response.json();
 
-  hideSpinner();
-
-  return data;
+    hideSpinner();
+    return data;
+  } catch (error) {
+    //
+    displayErrorMessage(
+      "TMDB API is Blocked in India by Indian Gov. Use a VPN to view the site."
+    );
+    hideSpinner();
+    return;
+  }
 }
 
 // Make Request to Search
@@ -489,57 +510,33 @@ function showAlert(message, className = "error") {
   setTimeout(() => div.remove(), 3000);
 }
 
-// New function to check API accessibility
-async function isAPIAccessible() {
-  const response = await fetch(
-    `${global.api.API_URL}movie/popular?api_key=${global.api.API_KEY}&language=en-US`
-  );
-
-  // Hide the spinner before returning the result
-  hideSpinner();
-  return response.ok;
-}
-
-async function init() {
-  showSpinner(); // Show the spinner when initializing
-
-  // Check if the API is accessible before proceeding
-  if (!(await isAPIAccessible())) {
-    document.body.innerHTML = `
-        <div class="error-message">
-          TMDB API doesn't work in India. Please use a VPN.
-        </div>
-      `;
-    return;
-  }
-
-  // console.log(window.location.pathname);
+// Modify the init function
+function init() {
   switch (global.currentPage) {
     case "/":
     case "/index.html":
-      // console.log("Home");
       displaySlider();
       displayPopularMovies();
       break;
     case "/shows.html":
-      // console.log("Shows");
       displayPopularShows();
       break;
     case "/movie-details.html":
-      // console.log("Movie Details");
       displayMovieDetails();
       break;
     case "/tv-details.html":
-      // console.log("TV Details");
       displayShowDetails();
       break;
     case "/search.html":
-      // console.log("Search");
       search();
       break;
   }
 
   highlightActiveLinks();
+  // console.error("Error in init:", error);
 }
 
-document.addEventListener("DOMContentLoaded", init);
+// Make sure to call init as an async function
+document.addEventListener("DOMContentLoaded", () => {
+  init();
+});
