@@ -479,9 +479,9 @@ function addCommasToNumber(number) {
 }
 
 // Show Alert
-function showAlert(message, classname = "error") {
+function showAlert(message, className = "error") {
   const div = document.createElement("div");
-  div.classList.add("alert", classname);
+  div.classList.add("alert", className);
   div.appendChild(document.createTextNode(message));
 
   document.querySelector("#alert").appendChild(div);
@@ -489,7 +489,30 @@ function showAlert(message, classname = "error") {
   setTimeout(() => div.remove(), 3000);
 }
 
-function init() {
+// New function to check API accessibility
+async function isAPIAccessible() {
+  const response = await fetch(
+    `${global.api.API_URL}movie/popular?api_key=${global.api.API_KEY}&language=en-US`
+  );
+
+  // Hide the spinner before returning the result
+  hideSpinner();
+  return response.ok;
+}
+
+async function init() {
+  showSpinner(); // Show the spinner when initializing
+
+  // Check if the API is accessible before proceeding
+  if (!(await isAPIAccessible())) {
+    document.body.innerHTML = `
+        <div class="error-message">
+          TMDB API doesn't work in India. Please use a VPN.
+        </div>
+      `;
+    return;
+  }
+
   // console.log(window.location.pathname);
   switch (global.currentPage) {
     case "/":
