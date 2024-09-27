@@ -473,7 +473,7 @@ async function fetchAPIData(endpoint) {
   } catch (error) {
     //
     displayErrorMessage(
-      "TMDB API is Blocked in India by Indian Gov. Use a VPN to view the site."
+      "API Error while fetching data from TMDB API. OR You are in India and I don't know why the TMDB API is blocked in India so please use a VPN to access the Website."
     );
     hideSpinner();
     return;
