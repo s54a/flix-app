@@ -426,14 +426,33 @@ function initSwiper() {
 // Add this function to display error messages
 function displayErrorMessage(message) {
   const mainContainer = document.querySelector(".mainContainer");
-  mainContainer.innerHTML = `
+
+  // Clear existing content
+  mainContainer.innerHTML = "";
+
+  // Create a new div for the error message
+  const errorDiv = document.createElement("div");
+  errorDiv.style.display = "flex";
+  errorDiv.style.justifyContent = "center";
+  errorDiv.style.alignItems = "center";
+  errorDiv.style.minHeight = "100vh"; // This ensures full viewport height
+  errorDiv.style.width = "100%";
+  errorDiv.style.position = "fixed"; // This positions the div relative to the viewport
+  errorDiv.style.top = "0";
+  errorDiv.style.left = "0";
+  errorDiv.style.backgroundColor = "rgba(0, 0, 0, 0.8)"; // Semi-transparent background
+
+  errorDiv.innerHTML = `
     <div class="container">
-      <div class="alert alert-danger text-center" role="alert">
+      <div class="alert alert-danger text-center" role="alert" style="max-width: 500px; margin: auto;">
         <h4 class="alert-heading">Error</h4>
         <p>${message}</p>
       </div>
     </div>
   `;
+
+  // Append the error div to the main container
+  mainContainer.appendChild(errorDiv);
 }
 
 // Fetch Data from MovieDB API
